@@ -14,6 +14,7 @@
     <groupId>org.serhat</groupId>
     <artifactId>e-commerce-backend</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -29,7 +30,7 @@
                 <configuration>
                     <excludes>
                         <exclude>
-                            <groupId>org.projectlombok</groupId>
+                            <groupId>org.project-lombok</groupId>
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
