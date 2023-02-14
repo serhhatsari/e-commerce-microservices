@@ -3,6 +3,7 @@ package com.serhat.productservice.service;
 import com.serhat.productservice.model.dto.request.ProductAddRequest;
 import com.serhat.productservice.model.dto.response.ProductDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
@@ -10,7 +11,7 @@ public interface ProductService {
 
     public ProductDto getProductById(Long id);
 
-    public List<ProductDto> searchProducts(String category, Integer minPrice, Integer maxPrice);
+    public List<ProductDto> searchProducts(String category, BigDecimal minPrice, BigDecimal maxPrice);
 
     public ProductDto createProduct(ProductAddRequest productAddRequest);
 

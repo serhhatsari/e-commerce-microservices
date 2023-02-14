@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -39,9 +40,8 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ProductDto>> searchProducts(
                                                         @RequestParam(value = "category", required = false) String category,
-                                                        @RequestParam(value = "min-price", required = false) Integer minPrice,
-                                                        @RequestParam(value = "max-price", required = false) Integer maxPrice) {
-
+                                                        @RequestParam(value = "min-price", required = false) BigDecimal minPrice,
+                                                        @RequestParam(value = "max-price", required = false) BigDecimal maxPrice) {
         return new ResponseEntity<>(productService.searchProducts(category, minPrice, maxPrice), HttpStatus.OK);
     }
 
