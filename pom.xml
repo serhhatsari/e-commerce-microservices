@@ -11,6 +11,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <modules>
+        <module>product-service</module>
+    </modules>
+
     <groupId>org.serhat</groupId>
     <artifactId>e-commerce-backend</artifactId>
     <version>1.0-SNAPSHOT</version>

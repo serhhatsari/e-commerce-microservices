@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+  # Services
+  product-service:
+    build: ./product-service
+    container_name: product-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_DATASOURCE_URL=jdbc:postgres://localhost:5432/productdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+    depends_on:
+      - postgres
+
+  # Databases
+  postgres:
+      image: postgres:latest
+      container_name: productdb
+      ports:
+      - "5432:5432"
+      volumes:
+        - ./product-service/src/main/resources/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=productdb
