@@ -1,6 +1,7 @@
 package com.serhat.productservice.controller;
 
-import com.serhat.productservice.model.dto.ProductDto;
+import com.serhat.productservice.model.dto.request.ProductAddRequest;
+import com.serhat.productservice.model.dto.response.ProductDto;
 import com.serhat.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,25 +17,54 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/")
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ProductDto>> getProducts() {
-        return ResponseEntity.ok(productService.getProducts());
+        return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductAddRequest productAddRequest) {
+        return new ResponseEntity<>(productService.createProduct(productAddRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.getProductById(id));
+        return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ProductDto>> searchProducts(@RequestParam(value = "name", required = false) String name,
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<ProductDto>> searchProducts(
                                                         @RequestParam(value = "category", required = false) String category,
-                                                        @RequestParam(value = "price-range", required = false) String priceRange) {
+                                                        @RequestParam(value = "min-price", required = false) Integer minPrice,
+                                                        @RequestParam(value = "max-price", required = false) Integer maxPrice) {
 
-        return new ResponseEntity<>(productService.searchProducts(name, category, priceRange), HttpStatus.OK);
-
+        return new ResponseEntity<>(productService.searchProducts(category, minPrice, maxPrice), HttpStatus.OK);
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<List<ProductDto>> filterProducts(@RequestParam(value = "availability", required = false) Boolean availability,
+                                                           @RequestParam(value = "color", required = false) String color,
+                                                           @RequestParam(value = "brand", required = false) String brand) {
+
+        return new ResponseEntity<>(productService.filterProducts(availability, color, brand), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody ProductAddRequest productAddRequest) {
+        return new ResponseEntity<>(productService.updateProduct(id, productAddRequest), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 
 }

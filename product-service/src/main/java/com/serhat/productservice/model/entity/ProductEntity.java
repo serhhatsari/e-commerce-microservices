@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id",  nullable = false)
     private Long id;
 
     @Column(nullable = false)
@@ -26,6 +27,9 @@ public class ProductEntity {
 
     @Column(nullable = false)
     private BigDecimal price;
+
+    @Column(nullable = false)
+    private String category;
 
     @Column(nullable = false)
     private Integer stock;
