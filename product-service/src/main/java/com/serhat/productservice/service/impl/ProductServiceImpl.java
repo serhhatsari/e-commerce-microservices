@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,8 +73,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> searchProducts(String category, Integer minPrice, Integer maxPrice) {
+    public List<ProductDto> searchProducts(String category, BigDecimal minPrice, BigDecimal maxPrice) {
         log.debug("searchProducts() is called");
+        log.info("category: {}, minPrice: {}, maxPrice: {}", category, minPrice, maxPrice);
         return productRepository.searchProducts( category, minPrice, maxPrice).stream()
                 .map(ProductConverter::convertToDto)
                 .collect(Collectors.toList());
