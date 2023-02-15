@@ -9,6 +9,8 @@ import com.serhat.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,9 +19,11 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final WebClient webClient;
 
     @Override
     public List<ProductDto> getProducts() {
@@ -32,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto createProduct(ProductAddRequest productAddRequest) {
         log.debug("createProduct() is called");
+        // get the user info from user-service by using webclient
         return ProductConverter.convertToDto(productRepository.save(ProductConverter.convertToEntity(productAddRequest)));
     }
 

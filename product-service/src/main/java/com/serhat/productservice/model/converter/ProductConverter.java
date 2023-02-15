@@ -3,10 +3,13 @@ package com.serhat.productservice.model.converter;
 import com.serhat.productservice.model.dto.request.ProductAddRequest;
 import com.serhat.productservice.model.dto.response.ProductDto;
 import com.serhat.productservice.model.entity.ProductEntity;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.reactive.function.client.WebClient;
 
 public class ProductConverter {
 
     public static ProductDto convertToDto(ProductEntity productEntity) {
+
         return ProductDto.builder()
                 .id(productEntity.getId())
                 .name(productEntity.getName())
@@ -17,6 +20,7 @@ public class ProductConverter {
                 .availability(productEntity.getAvailability())
                 .color(productEntity.getColor())
                 .brand(productEntity.getBrand())
+                .seller_id(productEntity.getSellerId())
                 .build();
     }
 
