@@ -34,6 +34,7 @@ public class ProductConverter {
                 .availability(productAddRequest.getAvailability())
                 .color(productAddRequest.getColor())
                 .brand(productAddRequest.getBrand())
+                .sellerId(productAddRequest.getSeller_id())
                 .build();
     }
 
