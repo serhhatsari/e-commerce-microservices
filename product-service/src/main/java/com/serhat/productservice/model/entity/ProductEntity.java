@@ -44,6 +44,6 @@ public class ProductEntity {
     private String brand;
 
     @Column(name = "seller_id", nullable = false)
-    private long sellerId;
+    private Long sellerId;
 
 }
