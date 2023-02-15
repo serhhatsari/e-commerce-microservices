@@ -3,13 +3,14 @@ package com.serhat.productservice.model.dto.response;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
+public class ProductDto implements Serializable {
 
     private Long id;
 

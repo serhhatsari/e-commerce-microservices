@@ -8,6 +8,9 @@ import com.serhat.productservice.repository.ProductRepository;
 import com.serhat.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -26,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
     private final WebClient webClient;
 
     @Override
+    @Cacheable(cacheNames = "products")
     public List<ProductDto> getProducts() {
         log.debug("getProducts() is called");
         return productRepository.findAll().stream()
@@ -34,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "products", allEntries = true)
     public ProductDto createProduct(ProductAddRequest productAddRequest) {
         log.debug("createProduct() is called");
         // get the user info from user-service by using webclient
@@ -49,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CachePut(cacheNames = "products", key = "#id", unless = "#result == null")
     public ProductDto updateProduct(Long id, ProductAddRequest productAddRequest) {
         log.debug("updateProduct() is called");
         return productRepository.findById(id)
@@ -58,18 +64,24 @@ public class ProductServiceImpl implements ProductService {
                     product.setBrand(productAddRequest.getBrand());
                     product.setColor(productAddRequest.getColor());
                     product.setAvailability(productAddRequest.getAvailability());
+                    product.setStock(productAddRequest.getStock());
+                    product.setDescription(productAddRequest.getDescription());
+                    product.setName(productAddRequest.getName());
+                    product.setSellerId(productAddRequest.getSeller_id());
                     return ProductConverter.convertToDto(productRepository.save(product));
                 })
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
     @Override
+    @CacheEvict(cacheNames = "products", allEntries = true)
     public void deleteProduct(Long id) {
         log.debug("deleteProduct() is called");
         productRepository.deleteById(id);
     }
 
     @Override
+    @Cacheable(cacheNames = "products", key = "#id")
     public ProductDto getProductById(Long id) {
         log.debug("getProductById() is called");
         return productRepository.findById(id)
