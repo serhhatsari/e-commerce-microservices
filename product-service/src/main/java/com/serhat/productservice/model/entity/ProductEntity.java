@@ -43,4 +43,7 @@ public class ProductEntity {
     @Column(nullable = false)
     private String brand;
 
+    @Column(name = "seller_id", nullable = false)
+    private long sellerId;
+
 }

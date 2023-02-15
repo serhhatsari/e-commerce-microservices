@@ -29,4 +29,6 @@ public class ProductDto {
 
     private String brand;
 
+    private long seller_id;
+
 }
