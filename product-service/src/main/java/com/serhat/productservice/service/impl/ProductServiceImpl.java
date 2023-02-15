@@ -55,6 +55,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @CachePut(cacheNames = "products", key = "#id", unless = "#result == null")
+    @CacheEvict(cacheNames = "products", allEntries = true)
     public ProductDto updateProduct(Long id, ProductAddRequest productAddRequest) {
         log.debug("updateProduct() is called");
         return productRepository.findById(id)
