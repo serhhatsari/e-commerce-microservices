@@ -21,10 +21,12 @@ spring:
     password: "postgres"
     driver-class-name: org.postgresql.Driver
 
+  data:
+    redis:
+      host: localhost
   cache:
-    type: redis
-    host: localhost
-    port: 6379
+    redis:
+      time-to-live: 60000
 
 springdoc:
   swagger-ui:
