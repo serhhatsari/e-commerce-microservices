@@ -29,7 +29,4 @@ public class ProductDto implements Serializable {
     private String color;
 
     private String brand;
-
-    private Long seller_id;
-
 }

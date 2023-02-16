@@ -68,8 +68,7 @@ public class ProductServiceImpl implements ProductService {
                     product.setStock(productAddRequest.getStock());
                     product.setDescription(productAddRequest.getDescription());
                     product.setName(productAddRequest.getName());
-                    product.setSellerId(productAddRequest.getSeller_id());
-                    return ProductConverter.convertToDto(productRepository.save(product));
+                   return ProductConverter.convertToDto(productRepository.save(product));
                 })
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }

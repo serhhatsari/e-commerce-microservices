@@ -22,7 +22,6 @@ public class ProductConverter {
                 .availability(productEntity.getAvailability())
                 .color(productEntity.getColor())
                 .brand(productEntity.getBrand())
-                .seller_id(productEntity.getSellerId())
                 .build();
     }
 
@@ -37,7 +36,6 @@ public class ProductConverter {
                 .availability(productAddRequest.getAvailability())
                 .color(productAddRequest.getColor())
                 .brand(productAddRequest.getBrand())
-                .sellerId(productAddRequest.getSeller_id())
                 .build();
     }
 

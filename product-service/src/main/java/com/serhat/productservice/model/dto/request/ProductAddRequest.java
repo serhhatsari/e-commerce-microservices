@@ -24,7 +24,4 @@ public class ProductAddRequest {
     private String color;
 
     private String brand;
-
-    private Long seller_id;
-
 }
