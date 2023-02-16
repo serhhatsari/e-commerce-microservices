@@ -1,7 +1,8 @@
 package com.serhat.orderservice.controller;
 
 
-import com.serhat.orderservice.model.dto.OrderDto;
+import com.serhat.orderservice.model.dto.request.OrderAddRequest;
+import com.serhat.orderservice.model.dto.response.OrderDto;
 import com.serhat.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,13 +29,13 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
-        return new ResponseEntity<>(orderService.createOrder(orderDto), HttpStatus.CREATED);
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderAddRequest orderAddRequest) {
+        return new ResponseEntity<>(orderService.createOrder(orderAddRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderDto> updateOrder(@PathVariable("id") Long id, @RequestBody OrderDto orderDto) {
-        return new ResponseEntity<>(orderService.updateOrder(id, orderDto), HttpStatus.OK);
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable("id") Long id, @RequestBody OrderAddRequest orderAddRequest) {
+        return new ResponseEntity<>(orderService.updateOrder(id, orderAddRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

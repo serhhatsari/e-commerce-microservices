@@ -1,15 +1,19 @@
 package com.serhat.orderservice.model.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Table(name = "order_items")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class OrderItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "order_id", nullable = false)
-    private Long orderId;
 
     @Column(name = "product_id", nullable = false)
     private Long productId;
@@ -21,6 +25,6 @@ public class OrderItemEntity {
     private Double price;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    @JoinColumn(name = "order_id")
     private OrderEntity order;
 }
