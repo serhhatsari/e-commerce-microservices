@@ -3,6 +3,7 @@ package com.serhat.productservice.controller;
 import com.serhat.productservice.model.dto.request.ProductAddRequest;
 import com.serhat.productservice.model.dto.response.ProductDto;
 import com.serhat.productservice.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductAddRequest productAddRequest) {
+    public ResponseEntity<ProductDto> createProduct(@RequestBody @Valid ProductAddRequest productAddRequest) {
         log.debug("POST /api/products is called");
         return new ResponseEntity<>(productService.createProduct(productAddRequest), HttpStatus.CREATED);
     }

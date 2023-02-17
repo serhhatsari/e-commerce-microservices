@@ -4,6 +4,7 @@ package com.serhat.orderservice.controller;
 import com.serhat.orderservice.model.dto.request.OrderAddRequest;
 import com.serhat.orderservice.model.dto.response.OrderDto;
 import com.serhat.orderservice.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +30,12 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderAddRequest orderAddRequest) {
+    public ResponseEntity<OrderDto> createOrder(@RequestBody @Valid OrderAddRequest orderAddRequest) {
         return new ResponseEntity<>(orderService.createOrder(orderAddRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderDto> updateOrder(@PathVariable("id") Long id, @RequestBody OrderAddRequest orderAddRequest) {
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable("id") Long id, @RequestBody @Valid OrderAddRequest orderAddRequest) {
         return new ResponseEntity<>(orderService.updateOrder(id, orderAddRequest), HttpStatus.OK);
     }
 
