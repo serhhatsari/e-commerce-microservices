@@ -1,5 +1,6 @@
 package com.serhat.orderservice.model.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.serhat.orderservice.constant.OrderStatus;
 import lombok.Builder;
 import lombok.Data;
@@ -15,14 +16,19 @@ public class OrderDto implements Serializable {
 
     private Long id;
 
+    @JsonProperty("customer_id")
     private Long customerId;
 
+    @JsonProperty("total_amount")
     private BigDecimal totalAmount;
 
+    @JsonProperty("order_date")
     private LocalDateTime orderDate;
 
+    @JsonProperty("order_status")
     private OrderStatus orderStatus;
 
+    @JsonProperty("order_items")
     private List<OrderItemDto> orderItems;
 
 }
