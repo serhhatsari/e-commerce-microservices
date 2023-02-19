@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
                     product.setName(productAddRequest.getName());
                    return ProductConverter.convertToDto(productRepository.save(product));
                 })
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(ProductNotFoundException::new);
     }
 
     @Override
