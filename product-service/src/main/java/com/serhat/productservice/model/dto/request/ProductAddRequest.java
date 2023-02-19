@@ -3,6 +3,7 @@ package com.serhat.productservice.model.dto.request;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -13,20 +14,19 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductAddRequest {
 
-
     @NotBlank(message = "Name cannot be blank")
     private String name;
 
     @NotBlank(message = "Description cannot be blank")
     private String description;
 
-
+    @Size(min = 0, message = "Price cannot be less than 0")
     private BigDecimal price;
 
     @NotBlank(message = "Category cannot be blank")
     private String category;
 
-
+    @Size(min = 0, message = "Stock cannot be less than 0")
     private Integer stock;
 
     private Boolean availability;
