@@ -6,6 +6,7 @@ import com.serhat.orderservice.model.dto.response.OrderDto;
 import com.serhat.orderservice.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody @Valid OrderAddRequest orderAddRequest) {
+    public ResponseEntity<OrderDto> createOrder(@RequestBody @Valid  OrderAddRequest orderAddRequest) {
         return new ResponseEntity<>(orderService.createOrder(orderAddRequest), HttpStatus.CREATED);
     }
 

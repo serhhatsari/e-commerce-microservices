@@ -1,6 +1,7 @@
 package com.serhat.productservice.model.dto.request;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -20,13 +21,12 @@ public class ProductAddRequest {
     @NotBlank(message = "Description cannot be blank")
     private String description;
 
-    @Size(min = 0, message = "Price cannot be less than 0")
     private BigDecimal price;
 
     @NotBlank(message = "Category cannot be blank")
     private String category;
 
-    @Size(min = 0, message = "Stock cannot be less than 0")
+    @Min(0)
     private Integer stock;
 
     private Boolean availability;
