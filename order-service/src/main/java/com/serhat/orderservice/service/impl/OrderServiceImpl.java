@@ -1,6 +1,7 @@
 package com.serhat.orderservice.service.impl;
 
 import com.serhat.orderservice.constant.OrderStatus;
+import com.serhat.orderservice.exception.OrderNotFoundException;
 import com.serhat.orderservice.model.converter.OrderConverter;
 import com.serhat.orderservice.model.dto.request.OrderAddRequest;
 import com.serhat.orderservice.model.dto.response.OrderDto;
@@ -26,7 +27,7 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public OrderDto getOrderById(Long id) {
-        return orderRepository.findById(id).map(OrderConverter::toOrderDto).orElse(null);
+        return orderRepository.findById(id).map(OrderConverter::toOrderDto).orElseThrow(OrderNotFoundException::new);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class OrderServiceImpl implements OrderService{
             order.setTotalAmount(orderAddRequest.getTotalAmount());
             order.setOrderItems(OrderConverter.toOrderItemEntityList(orderAddRequest.getOrderItems(), order));
             return OrderConverter.toOrderDto(orderRepository.save(order));
-        }).orElse(null);
+        }).orElseThrow(OrderNotFoundException::new);
     }
 
     @Override
