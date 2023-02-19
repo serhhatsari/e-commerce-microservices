@@ -7,17 +7,17 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
-    public List<ProductDto> getProducts();
+    List<ProductDto> getProducts();
 
-    public ProductDto getProductById(Long id);
+    ProductDto getProductById(Long id);
 
-    public List<ProductDto> searchProducts(String category, BigDecimal minPrice, BigDecimal maxPrice);
+    List<ProductDto> searchProducts(String category, BigDecimal minPrice, BigDecimal maxPrice);
 
-    public ProductDto createProduct(ProductAddRequest productAddRequest);
+    ProductDto createProduct(ProductAddRequest productAddRequest);
 
-    public List<ProductDto> filterProducts(Boolean availability, String color, String brand);
+    List<ProductDto> filterProducts(Boolean availability, String color, String brand);
 
-    public ProductDto updateProduct(Long id, ProductAddRequest productAddRequest);
+    ProductDto updateProduct(Long id, ProductAddRequest productAddRequest);
 
-    public void deleteProduct(Long id);
+    void deleteProduct(Long id);
 }
