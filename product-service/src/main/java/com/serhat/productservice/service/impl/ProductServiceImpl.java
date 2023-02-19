@@ -1,6 +1,7 @@
 package com.serhat.productservice.service.impl;
 
 
+import com.serhat.productservice.exception.ProductNotFoundException;
 import com.serhat.productservice.model.converter.ProductConverter;
 import com.serhat.productservice.model.dto.request.ProductAddRequest;
 import com.serhat.productservice.model.dto.response.ProductDto;
@@ -41,7 +42,6 @@ public class ProductServiceImpl implements ProductService {
     @CacheEvict(cacheNames = "products", allEntries = true)
     public ProductDto createProduct(ProductAddRequest productAddRequest) {
         log.debug("createProduct() is called");
-        // get the user info from user-service by using webclient
         return ProductConverter.convertToDto(productRepository.save(ProductConverter.convertToEntity(productAddRequest)));
     }
 
@@ -86,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
         log.debug("getProductById() is called");
         return productRepository.findById(id)
                 .map(ProductConverter::convertToDto)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(ProductNotFoundException::new);
     }
 
     @Override

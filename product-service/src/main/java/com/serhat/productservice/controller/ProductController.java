@@ -30,7 +30,7 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ProductDto> createProduct(@RequestBody @Valid ProductAddRequest productAddRequest) {
+    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductAddRequest productAddRequest) {
         log.debug("POST /api/products is called");
         return new ResponseEntity<>(productService.createProduct(productAddRequest), HttpStatus.CREATED);
     }
@@ -62,7 +62,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody ProductAddRequest productAddRequest) {
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductAddRequest productAddRequest) {
         log.debug("PUT /api/products/{} is called", id);
         return new ResponseEntity<>(productService.updateProduct(id, productAddRequest), HttpStatus.OK);
     }
