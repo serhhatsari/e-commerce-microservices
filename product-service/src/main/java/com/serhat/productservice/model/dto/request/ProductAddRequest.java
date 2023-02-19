@@ -1,5 +1,7 @@
 package com.serhat.productservice.model.dto.request;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -11,27 +13,27 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductAddRequest {
 
-    @NotEmpty(message = "Name cannot be empty")
+
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
-    @NotEmpty(message = "Description cannot be empty")
+    @NotBlank(message = "Description cannot be blank")
     private String description;
 
-    @NotEmpty(message = "Price cannot be empty")
+
     private BigDecimal price;
 
-    @NotEmpty(message = "Category cannot be empty")
+    @NotBlank(message = "Category cannot be blank")
     private String category;
 
-    @NotEmpty(message = "Stock cannot be empty")
+
     private Integer stock;
 
-    @NotEmpty(message = "Availability cannot be empty")
     private Boolean availability;
 
-    @NotEmpty(message = "Color cannot be empty")
+    @NotBlank(message = "Color cannot be blank")
     private String color;
 
-    @NotEmpty(message = "Brand cannot be empty")
+    @NotBlank(message = "Brand cannot be blank")
     private String brand;
 }
