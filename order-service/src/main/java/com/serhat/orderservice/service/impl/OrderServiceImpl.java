@@ -9,6 +9,9 @@ import com.serhat.orderservice.model.entity.OrderItemEntity;
 import com.serhat.orderservice.repository.OrderRepository;
 import com.serhat.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,21 +24,25 @@ public class OrderServiceImpl implements OrderService{
     private final OrderRepository orderRepository;
 
     @Override
+    @Cacheable(value = "orders")
     public List<OrderDto> getAllOrders() {
         return orderRepository.findAll().stream().map(OrderConverter::toOrderDto).collect(Collectors.toList());
     }
 
     @Override
+    @Cacheable(value = "orders", key = "#id")
     public OrderDto getOrderById(Long id) {
         return orderRepository.findById(id).map(OrderConverter::toOrderDto).orElseThrow(OrderNotFoundException::new);
     }
 
     @Override
+    @CacheEvict(value = "orders", allEntries = true)
     public OrderDto createOrder(OrderAddRequest orderAddRequest) {
         return OrderConverter.toOrderDto(orderRepository.save(OrderConverter.toOrderEntity(orderAddRequest)));
     }
 
     @Override
+    @CachePut(value = "orders", key = "#id")
     public OrderDto updateOrder(Long id, OrderAddRequest orderAddRequest) {
         return orderRepository.findById(id).map(order -> {
             order.setOrderStatus(OrderStatus.PLACED);
@@ -47,6 +54,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
+    @CacheEvict(value = "orders", allEntries = true)
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
     }

@@ -1,6 +1,7 @@
 package com.serhat.orderservice.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.serhat.orderservice.constant.OrderStatus;
 import com.serhat.orderservice.model.dto.response.OrderItemDto;
 import jakarta.validation.Valid;
@@ -19,16 +20,20 @@ import java.util.List;
 public class OrderAddRequest {
 
     @NotNull(message = "Customer Id cannot be null")
+    @JsonProperty("customer_id")
     private Long customerId;
 
     @DecimalMin(value = "0.0", message = "Total amount must be greater than or equal to 0")
+    @JsonProperty("total_amount")
     private BigDecimal totalAmount;
 
     @NotNull(message = "Order date cannot be null")
+    @JsonProperty("order_date")
     private LocalDateTime orderDate;
 
     @NotEmpty(message = "Order Items cannot be empty")
     @Valid
+    @JsonProperty("order_items")
     private List<OrderItemAddRequest> orderItems;
 
 }
