@@ -82,7 +82,6 @@ class ProductControllerTest {
                 .name("Samsung S10")
                 .stock(10)
                 .category("Phone")
-                .seller_id(1L)
                 .description("This is a phone")
                 .build();
 
