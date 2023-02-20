@@ -6,32 +6,42 @@ import com.serhat.customerservice.model.dto.response.CustomerDto;
 import com.serhat.customerservice.repository.CustomerRepository;
 import com.serhat.customerservice.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     @Override
     @CacheEvict(value = "customers", allEntries = true)
     public CustomerDto createCustomer(CustomerAddRequest customerAddRequest) {
+        log.info("Creating customer: {}", customerAddRequest);
+        log.info("Cache evicted for all customers");
         return CustomerConverter.toDto(customerRepository.save(CustomerConverter.toEntity(customerAddRequest)));
     }
 
     @Override
     @Cacheable(value = "customers", key = "#id")
     public CustomerDto getCustomer(String id) {
+        log.info("Getting customer with id: {}", id);
+        log.info("Cache hit for customer with id: {}", id);
         return customerRepository.findById(id).map(CustomerConverter::toDto).orElseThrow(RuntimeException::new);
     }
 
     @Override
     @CachePut(value = "customers", key = "#id")
-    public CustomerDto updateCustomer(String id,
-                                      CustomerAddRequest customerAddRequest) {
+    public CustomerDto updateCustomer(String id, CustomerAddRequest customerAddRequest)
+    {
+        log.info("Updating customer with id: {}", id);
+        log.info("Cache updated for customer with id: {}", id);
         return CustomerConverter.toDto(
                 customerRepository.findById(id)
                         .map(customerEntity -> {
@@ -50,6 +60,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @CacheEvict(value = "customers", key = "#id")
     public void deleteCustomer(String id) {
+        log.info("Deleting customer with id: {}", id);
+        log.info("Cache evicted for customer with id: {}", id);
         customerRepository.deleteById(id);
     }
 }
