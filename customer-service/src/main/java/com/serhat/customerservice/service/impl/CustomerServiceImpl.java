@@ -1,5 +1,6 @@
 package com.serhat.customerservice.service.impl;
 
+import com.serhat.customerservice.exception.CustomerNotFoundException;
 import com.serhat.customerservice.model.converter.CustomerConverter;
 import com.serhat.customerservice.model.dto.request.CustomerAddRequest;
 import com.serhat.customerservice.model.dto.response.CustomerDto;
@@ -33,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto getCustomer(String id) {
         log.info("Getting customer with id: {}", id);
         log.info("Cache hit for customer with id: {}", id);
-        return customerRepository.findById(id).map(CustomerConverter::toDto).orElseThrow(RuntimeException::new);
+        return customerRepository.findById(id).map(CustomerConverter::toDto).orElseThrow(CustomerNotFoundException::new);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
                             return customerEntity;
                         })
                         .map(customerRepository::save)
-                        .orElseThrow(RuntimeException::new));
+                        .orElseThrow(CustomerNotFoundException::new));
     }
 
     @Override
