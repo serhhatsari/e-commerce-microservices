@@ -44,11 +44,4 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /*
-    @GetMapping("/:id/orders")
-    public ResponseEntity<List<OrderDto>> getCustomerOrders(@PathVariable String id) {
-        return new ResponseEntity<>(customerService.getCustomerOrders(id),  HttpStatus.OK);
-    }*/
-
-
 }
