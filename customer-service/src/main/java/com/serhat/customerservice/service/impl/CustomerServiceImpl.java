@@ -6,6 +6,9 @@ import com.serhat.customerservice.model.dto.response.CustomerDto;
 import com.serhat.customerservice.repository.CustomerRepository;
 import com.serhat.customerservice.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,17 +17,21 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     @Override
+    @CacheEvict(value = "customers", allEntries = true)
     public CustomerDto createCustomer(CustomerAddRequest customerAddRequest) {
         return CustomerConverter.toDto(customerRepository.save(CustomerConverter.toEntity(customerAddRequest)));
     }
 
     @Override
+    @Cacheable(value = "customers", key = "#id")
     public CustomerDto getCustomer(String id) {
         return customerRepository.findById(id).map(CustomerConverter::toDto).orElseThrow(RuntimeException::new);
     }
 
     @Override
-    public CustomerDto updateCustomer(String id, CustomerAddRequest customerAddRequest) {
+    @CachePut(value = "customers", key = "#id")
+    public CustomerDto updateCustomer(String id,
+                                      CustomerAddRequest customerAddRequest) {
         return CustomerConverter.toDto(
                 customerRepository.findById(id)
                         .map(customerEntity -> {
@@ -41,6 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @CacheEvict(value = "customers", key = "#id")
     public void deleteCustomer(String id) {
         customerRepository.deleteById(id);
     }
