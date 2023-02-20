@@ -8,6 +8,9 @@ import com.serhat.paymentservice.repository.PaymentRepository;
 import com.serhat.paymentservice.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,18 +24,21 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
 
     @Override
+    @CacheEvict(value = "payments", allEntries = true)
     public PaymentResponse createPayment(PaymentRequest paymentRequest) {
         log.info("Payment request received: {}", paymentRequest);
         return PaymentConverter.toResponse(paymentRepository.save(PaymentConverter.toEntity(paymentRequest)));
     }
 
     @Override
+    @Cacheable(value = "payments", key = "#id")
     public PaymentResponse getPayment(Long id) {
         log.info("Payment get request received: {}", id);
         return PaymentConverter.toResponse(paymentRepository.findById(id).orElseThrow(PaymentNotFoundException::new));
     }
 
     @Override
+    @CachePut(value = "payments", key = "#id")
     public PaymentResponse updatePayment(Long id, PaymentRequest paymentRequest) {
         log.info("Payment update request received: {}", paymentRequest);
         return PaymentConverter.toResponse(
@@ -48,6 +54,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @CacheEvict(value = "payments", allEntries = true)
     public void deletePayment(Long id) {
         log.info("Payment delete request received: {}", id);
         paymentRepository.deleteById(id);
