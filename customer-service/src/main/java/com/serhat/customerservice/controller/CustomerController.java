@@ -4,6 +4,7 @@ import com.serhat.customerservice.model.dto.request.CustomerAddRequest;
 import com.serhat.customerservice.model.dto.response.CustomerDto;
 import com.serhat.customerservice.model.entity.CustomerEntity;
 import com.serhat.customerservice.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerAddRequest customerAddRequest) {
+    public ResponseEntity<CustomerDto> createCustomer(@Valid  @RequestBody CustomerAddRequest customerAddRequest) {
         log.info("Request received to create customer: {}", customerAddRequest);
         return new ResponseEntity<>(customerService.createCustomer(customerAddRequest),  HttpStatus.CREATED);
     }
@@ -31,7 +32,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable String id, @RequestBody CustomerAddRequest customerAddRequest) {
+    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable String id, @Valid @RequestBody CustomerAddRequest customerAddRequest) {
         log.info("Request received to update customer with id: {}", id);
         return new ResponseEntity<>(customerService.updateCustomer(id, customerAddRequest),  HttpStatus.OK);
     }
