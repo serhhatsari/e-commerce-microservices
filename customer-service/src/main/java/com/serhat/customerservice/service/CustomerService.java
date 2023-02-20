@@ -9,4 +9,10 @@ import java.util.List;
 public interface CustomerService {
 
     CustomerDto createCustomer(CustomerAddRequest customerAddRequest);
+
+    CustomerDto getCustomer(String id);
+
+    CustomerDto updateCustomer(String id, CustomerAddRequest customerAddRequest);
+
+    void deleteCustomer(String id);
 }

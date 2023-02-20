@@ -21,4 +21,27 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.createCustomer(customerAddRequest),  HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerDto> getCustomer(@PathVariable String id) {
+        return new ResponseEntity<>(customerService.getCustomer(id),  HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable String id, @RequestBody CustomerAddRequest customerAddRequest) {
+        return new ResponseEntity<>(customerService.updateCustomer(id, customerAddRequest),  HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable String id) {
+        customerService.deleteCustomer(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /*
+    @GetMapping("/:id/orders")
+    public ResponseEntity<List<OrderDto>> getCustomerOrders(@PathVariable String id) {
+        return new ResponseEntity<>(customerService.getCustomerOrders(id),  HttpStatus.OK);
+    }*/
+
+
 }
