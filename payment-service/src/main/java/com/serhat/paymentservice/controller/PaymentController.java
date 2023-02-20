@@ -1,7 +1,7 @@
 package com.serhat.paymentservice.controller;
 
-import com.serhat.paymentservice.entity.dto.request.PaymentRequest;
-import com.serhat.paymentservice.entity.dto.response.PaymentResponse;
+import com.serhat.paymentservice.model.dto.request.PaymentRequest;
+import com.serhat.paymentservice.model.dto.response.PaymentResponse;
 import com.serhat.paymentservice.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
