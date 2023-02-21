@@ -28,6 +28,20 @@ spring:
     redis:
       time-to-live: 60000
 
+  kafka:
+    template:
+      default-topic: order-events
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: product-group
+      properties:
+        spring:
+          json:
+            type:
+              mapping: order-event:com.serhat.productservice.model.event.OrderPlacedEvent
+
 springdoc:
   swagger-ui:
     path: /api/docs

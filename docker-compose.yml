@@ -1,6 +1,19 @@
 version: "3.7"
 services:
-  # Services
+
+  # API Gateway
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - product-service
+      - customer-service
+      - order-service
+      - payment-service
+
+  # Product Service
   product-service:
     build: ./product-service
     container_name: product-service
@@ -14,6 +27,55 @@ services:
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
     depends_on:
       - postgres
+      - redis
+
+  # Order Service
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/orderdb?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+    depends_on:
+      - mysql
+      - redis
+
+  # Payment Service
+  payment-service:
+    build: ./payment-service
+    container_name: payment-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/paymentdb?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+    depends_on:
+      - mysql
+      - redis
+
+  # Customer Service
+  customer-service:
+    build: ./customer-service
+    container_name: customer-service
+    ports:
+      - "8084:8084"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/customerdb
+      - SPRING_DATA_MONGODB_DATABASE=customerdb
+    depends_on:
+      - mongo
+      - redis
 
   # Databases
   postgres:
@@ -27,3 +89,52 @@ services:
       - POSTGRES_USERNAME=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=productdb
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=mysql
+      - MYSQL_USER=dev
+      - MYSQL_PASSWORD=dev
+
+  mongo:
+        image: mongo:4.4.6
+        container_name: customerdb
+        ports:
+        - "27017:27017"
+        environment:
+        - MONGO_INITDB_ROOT_USERNAME=dev
+        - MONGO_INITDB_ROOT_PASSWORD=dev
+        - MONGO_INITDB_DATABASE=customerdb
+
+  # Redis Cache
+  redis:
+      image: redis:latest
+      container_name: redis
+      ports:
+      - "6379:6379"
+
+  # Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: broker
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
