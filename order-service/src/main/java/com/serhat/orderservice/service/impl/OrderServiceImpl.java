@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService{
     @CacheEvict(value = "orders", allEntries = true)
     public OrderDto createOrder(OrderAddRequest orderAddRequest) {
         OrderEntity orderEntity = orderRepository.save(OrderConverter.toOrderEntity(orderAddRequest));
-        kafkaTemplate.send("order-events", new OrderPlacedEvent(orderEntity.getId(), orderEntity.getCustomerId(), orderEntity.getTotalAmount()));
+        kafkaTemplate.send("order-events", new OrderPlacedEvent(orderEntity.getId(), orderEntity.getCustomerId(), orderEntity.getTotalAmount(), OrderConverter.toOrderItemEventList(orderEntity.getOrderItems())));
         return OrderConverter.toOrderDto(orderEntity);
     }
 
