@@ -14,7 +14,8 @@ spring:
       database: customerdb
 
     redis:
-      host: ${REDIS_HOST:redis}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
   cache:
     redis:
       time-to-live: 60000
