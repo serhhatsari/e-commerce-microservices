@@ -9,6 +9,7 @@ import com.serhat.orderservice.model.dto.response.OrderDto;
 import com.serhat.orderservice.model.entity.OrderEntity;
 import com.serhat.orderservice.repository.OrderRepository;
 import com.serhat.orderservice.service.OrderService;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -29,6 +30,8 @@ public class OrderServiceImpl implements OrderService{
 
     private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
+    private final MeterRegistry meterRegistry;
+
     @Override
     @Cacheable(value = "orders")
     public List<OrderDto> getAllOrders() {
@@ -45,7 +48,7 @@ public class OrderServiceImpl implements OrderService{
     @CacheEvict(value = "orders", allEntries = true)
     public OrderDto createOrder(OrderAddRequest orderAddRequest) {
         OrderEntity orderEntity = orderRepository.save(OrderConverter.toOrderEntity(orderAddRequest));
-        kafkaTemplate.send("order-events", new OrderPlacedEvent(orderEntity.getId(), orderEntity.getCustomerId(), orderEntity.getTotalAmount()));
+        kafkaTemplate.send("order-events", new OrderPlacedEvent(orderEntity.getId(), orderEntity.getCustomerId(), orderEntity.getTotalAmount(), OrderConverter.toOrderItemEventList(orderEntity.getOrderItems())));
         return OrderConverter.toOrderDto(orderEntity);
     }
 

@@ -7,6 +7,7 @@ import com.serhat.orderservice.model.dto.response.OrderDto;
 import com.serhat.orderservice.model.dto.response.OrderItemDto;
 import com.serhat.orderservice.model.entity.OrderEntity;
 import com.serhat.orderservice.model.entity.OrderItemEntity;
+import com.serhat.orderservice.model.event.OrderItemEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,5 +69,21 @@ public class OrderConverter {
                 .build();
     }
 
+
+    // Event
+    public static OrderItemEvent toOrderItemEvent(OrderItemEntity orderItemEntity) {
+        return OrderItemEvent.builder()
+                .id(orderItemEntity.getId())
+                .productId(orderItemEntity.getProductId())
+                .quantity(orderItemEntity.getQuantity())
+                .price(orderItemEntity.getPrice())
+                .build();
+    }
+
+    public static List<OrderItemEvent> toOrderItemEventList(List<OrderItemEntity> orderItemEntities) {
+        return orderItemEntities.stream()
+                .map(OrderConverter::toOrderItemEvent)
+                .collect(Collectors.toList());
+    }
 
 }

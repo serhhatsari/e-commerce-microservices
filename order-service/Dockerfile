@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17.0.4.1_1-jre as builder
 WORKDIR extracted
-ADD target/*.jar app.jar
+ADD ./target/*.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
 FROM eclipse-temurin:17.0.4.1_1-jre

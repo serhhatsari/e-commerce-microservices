@@ -6,14 +6,15 @@ spring:
     name: customer-service
 
   profiles:
-    active: local
+    active: ${SPRING_PROFILES_ACTIVE:local}
 
   data:
     mongodb:
-      uri: mongodb://localhost:27017
+      uri: ${MONGO_URI:mongodb://mongo:27017}
       database: customerdb
+
     redis:
-      host: localhost
+      host: ${REDIS_HOST:redis}
   cache:
     redis:
       time-to-live: 60000
@@ -21,3 +22,17 @@ spring:
 springdoc:
   swagger-ui:
     path: /api/docs
+
+# prometheus
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["health", "metrics", "prometheus"]
+    endpoint:
+      metrics:
+        enabled: true
+      health:
+        show-details: always
+      prometheus:
+        enabled: true
