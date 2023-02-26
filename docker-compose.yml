@@ -8,6 +8,9 @@ services:
       - "8080:8080"
     depends_on:
       - order-service
+      - product-service
+      - payment-service
+      - customer-service
 
   # Product Service
   product-service:
@@ -21,6 +24,7 @@ services:
         SPRING_DATASOURCE_USERNAME: postgres
         SPRING_DATASOURCE_PASSWORD: postgres
         REDIS_HOST: redis
+        REDIS_PORT: 6379
         KAFKA_BOOTSTRAP_SERVERS: kafka:9092
         KAFKA_TOPIC: order-events
         GROUP_ID: product-group
@@ -41,6 +45,7 @@ services:
       SPRING_DATASOURCE_USERNAME: dev
       SPRING_DATASOURCE_PASSWORD: dev
       REDIS_HOST: redis
+      REDIS_PORT: 6379
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KAFKA_TOPIC: order-events
     depends_on:
