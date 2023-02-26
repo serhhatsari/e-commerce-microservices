@@ -9,18 +9,18 @@ spring:
     gateway:
       routes:
         - id: customer-service
-          uri: http://localhost:8084
+          uri: http://customer-service:8080
           predicates:
             - Path=/api/v1/customers
         - id: order-service
-          uri: http://localhost:8082
+          uri: http://order-service:8080
           predicates:
             - Path=/api/v1/orders
         - id: product-service
-          uri: http://localhost:8081
+          uri: http://product-service:8080
           predicates:
             - Path=/api/v1/products
         - id: payment-service
-          uri: http://localhost:8083
+          uri: http://payment-service:8080
           predicates:
             - Path=/api/v1/payments
