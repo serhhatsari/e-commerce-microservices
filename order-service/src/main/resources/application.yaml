@@ -6,7 +6,7 @@ spring:
     name: order-service
 
   profiles:
-    active: local
+    active: ${SPRING_PROFILES_ACTIVE:local}
 
   jpa:
     hibernate:
@@ -16,22 +16,22 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 
   datasource:
-    url: jdbc:mysql://localhost:3306/orderdb?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: "root"
-    password: "root"
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME:dev}
+    password: ${SPRING_DATASOURCE_PASSWORD:dev}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   data:
     redis:
-      host: localhost
+      host: ${REDIS_HOST:redis}
   cache:
     redis:
       time-to-live: 60000
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     template:
-      default-topic: order-events
+      default-topic: ${KAFKA_TOPIC:order-events}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -44,3 +44,10 @@ spring:
 springdoc:
   swagger-ui:
     path: /api/docs
+
+# prometheus
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

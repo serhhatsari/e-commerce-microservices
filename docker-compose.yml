@@ -1,33 +1,13 @@
 version: "3.7"
 services:
-
   # API Gateway
-  api-gateway:
-    build: ./api-gateway
-    container_name: api-gateway
+  api-gateaway:
+    build: ./api-gateaway
+    container_name: api-gateaway
     ports:
       - "8080:8080"
     depends_on:
-      - product-service
-      - customer-service
       - order-service
-      - payment-service
-
-  # Product Service
-  product-service:
-    build: ./product-service
-    container_name: product-service
-    ports:
-      - "8081:8081"
-    environment:
-      - SPRING_PROFILES_ACTIVE=local
-      - SPRING_DATASOURCE_URL=jdbc:postgres://localhost:5432/productdb
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
-    depends_on:
-      - postgres
-      - redis
 
   # Order Service
   order-service:
@@ -36,86 +16,19 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - SPRING_PROFILES_ACTIVE=local
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/orderdb?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/orderdb?createDatabaseIfNotExist=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: dev
+      SPRING_DATASOURCE_PASSWORD: dev
+      REDIS_HOST: redis
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC: order-events
     depends_on:
       - mysql
       - redis
+      - kafka
 
-  # Payment Service
-  payment-service:
-    build: ./payment-service
-    container_name: payment-service
-    ports:
-      - "8083:8083"
-    environment:
-      - SPRING_PROFILES_ACTIVE=local
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/paymentdb?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
-    depends_on:
-      - mysql
-      - redis
-
-  # Customer Service
-  customer-service:
-    build: ./customer-service
-    container_name: customer-service
-    ports:
-      - "8084:8084"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
-      - MONGO_INITDB_ROOT_PASSWORD=secret
-      - SPRING_PROFILES_ACTIVE=local
-      - SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/customerdb
-      - SPRING_DATA_MONGODB_DATABASE=customerdb
-    depends_on:
-      - mongo
-      - redis
-
-  # Databases
-  postgres:
-      image: postgres:latest
-      container_name: productdb
-      ports:
-      - "5432:5432"
-      volumes:
-        - ./product-service/src/main/resources/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
-      environment:
-      - POSTGRES_USERNAME=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=productdb
-
-  mysql:
-    image: mysql:5.7
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=mysql
-      - MYSQL_USER=dev
-      - MYSQL_PASSWORD=dev
-
-  mongo:
-        image: mongo:4.4.6
-        container_name: customerdb
-        ports:
-        - "27017:27017"
-        environment:
-        - MONGO_INITDB_ROOT_USERNAME=dev
-        - MONGO_INITDB_ROOT_PASSWORD=dev
-        - MONGO_INITDB_DATABASE=customerdb
-
-  # Redis Cache
-  redis:
-      image: redis:latest
-      container_name: redis
-      ports:
-      - "6379:6379"
-
-  # Kafka
+  # Zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
     container_name: zookeeper
@@ -123,9 +36,10 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  broker:
+  # Kafka
+  kafka:
     image: confluentinc/cp-kafka:7.3.0
-    container_name: broker
+    container_name: kafka
     ports:
       - "9092:9092"
     depends_on:
@@ -134,7 +48,56 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_INTERNAL://localhost:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  # Kafka UI
+  kafka-ui:
+    container_name: kafkaui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "9093:8080"
+    links:
+      - kafka
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+
+  # Prometheus
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.40.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  # Grafana
+  grafana:
+    container_name: grafana
+    image: grafana/grafana-oss:latest
+    ports:
+      - "3000:3000"
+    environment:
+      GH_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
+
+  # MySQL
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: orderdb
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+
+  # Redis Cache
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
