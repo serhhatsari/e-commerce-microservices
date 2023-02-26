@@ -9,12 +9,32 @@ services:
     depends_on:
       - order-service
 
+  # Product Service
+  product-service:
+      build: ./product-service
+      container_name: product-service
+      ports:
+      - "8081:8080"
+      environment:
+        SPRING_PROFILES_ACTIVE: local
+        SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/productdb
+        SPRING_DATASOURCE_USERNAME: postgres
+        SPRING_DATASOURCE_PASSWORD: postgres
+        REDIS_HOST: redis
+        KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+        KAFKA_TOPIC: order-events
+        GROUP_ID: product-group
+      depends_on:
+        - postgres
+        - redis
+        - kafka
+
   # Order Service
   order-service:
     build: ./order-service
     container_name: order-service
     ports:
-      - "8082:8082"
+      - "8082:8080"
     environment:
       SPRING_PROFILES_ACTIVE: local
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/orderdb?createDatabaseIfNotExist=true&useSSL=false
@@ -28,12 +48,28 @@ services:
       - redis
       - kafka
 
+  # Payment Service
+  payment-service:
+    build: ./payment-service
+    container_name: payment-service
+    ports:
+    - "8083:8080"
+    environment:
+        SPRING_PROFILES_ACTIVE: local
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/paymentdb?createDatabaseIfNotExist=true&useSSL=false
+        SPRING_DATASOURCE_USERNAME: root
+        SPRING_DATASOURCE_PASSWORD: root
+        REDIS_HOST: redis
+    depends_on:
+        - mysql
+        - redis
+
   # Customer Service
   customer-service:
       build: ./customer-service
       container_name: customer-service
       ports:
-      - "8084:8084"
+      - "8084:8080"
       environment:
         SPRING_PROFILES_ACTIVE: local
         MONGO_URI: mongodb://mongo:27017
@@ -98,6 +134,17 @@ services:
       - "3000:3000"
     environment:
       GH_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
+
+  # Postgres
+  postgres:
+      image: postgres:latest
+      container_name: postgres
+      ports:
+      - "5432:5432"
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: productdb
 
   # MySQL
   mysql:
