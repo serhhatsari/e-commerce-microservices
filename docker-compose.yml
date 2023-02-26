@@ -14,24 +14,24 @@ services:
 
   # Product Service
   product-service:
-      build: ./product-service
-      container_name: product-service
-      ports:
-      - "8081:8080"
-      environment:
-        SPRING_PROFILES_ACTIVE: local
-        SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/productdb
-        SPRING_DATASOURCE_USERNAME: postgres
-        SPRING_DATASOURCE_PASSWORD: postgres
-        REDIS_HOST: redis
-        REDIS_PORT: 6379
-        KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-        KAFKA_TOPIC: order-events
-        GROUP_ID: product-group
-      depends_on:
-        - postgres
-        - redis
-        - kafka
+    build: ./product-service
+    container_name: product-service
+    ports:
+    - "8081:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/productdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC: order-events
+      GROUP_ID: product-group
+    depends_on:
+      - postgres
+      - redis
+      - kafka
 
   # Order Service
   order-service:
@@ -60,28 +60,30 @@ services:
     ports:
     - "8083:8080"
     environment:
-        SPRING_PROFILES_ACTIVE: local
-        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/paymentdb?createDatabaseIfNotExist=true&useSSL=false
-        SPRING_DATASOURCE_USERNAME: root
-        SPRING_DATASOURCE_PASSWORD: root
-        REDIS_HOST: redis
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/paymentdb?createDatabaseIfNotExist=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
         - mysql
         - redis
 
   # Customer Service
   customer-service:
-      build: ./customer-service
-      container_name: customer-service
-      ports:
-      - "8084:8080"
-      environment:
-        SPRING_PROFILES_ACTIVE: local
-        MONGO_URI: mongodb://mongo:27017
-        REDIS_HOST: redis
-      depends_on:
-      - mongo
-      - redis
+    build: ./customer-service
+    container_name: customer-service
+    ports:
+    - "8084:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      MONGO_URI: mongodb://mongo:27017
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+    - mongo
+    - redis
 
   # Zookeeper
   zookeeper:
