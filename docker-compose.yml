@@ -28,6 +28,20 @@ services:
       - redis
       - kafka
 
+  # Customer Service
+  customer-service:
+      build: ./customer-service
+      container_name: customer-service
+      ports:
+      - "8084:8084"
+      environment:
+        SPRING_PROFILES_ACTIVE: local
+        MONGO_URI: mongodb://mongo:27017
+        REDIS_HOST: redis
+      depends_on:
+      - mongo
+      - redis
+
   # Zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
@@ -55,7 +69,6 @@ services:
 
   # Kafka UI
   kafka-ui:
-    container_name: kafkaui
     image: provectuslabs/kafka-ui:latest
     ports:
       - "9093:8080"
@@ -94,6 +107,17 @@ services:
       MYSQL_DATABASE: orderdb
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
+
+  # MongoDB
+  mongo:
+      image: mongo:4.4.6
+      container_name: mongo
+      ports:
+      - "27017:27017"
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: root
+        MONGO_INITDB_DATABASE: customerdb
 
   # Redis Cache
   redis:
