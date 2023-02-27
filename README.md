@@ -1,4 +1,7 @@
 # Description
+Implementation of a REST Microservices for an E-Commerce Project with Spring Boot.  
+
+Technologies used in this project: MySQL, MongoDB, PostgreSQL, Redis, Kafka, Prometheus, Grafana, Docker, Docker Compose, Spring Cloud Gateway
 
 ## Getting Started
 
