@@ -13,7 +13,7 @@ You can clone the project using the following command:
 
 ### Executing program
 First, you need to build every service by running the build script:  
-`chmod +x build.sh && ./build.sh`
+`cd build && chmod +x build.sh && ./build.sh && cd ..`
 
 Then, you can run the project using docker compose:    
-`docker compose up`
+`docker compose up --build`
