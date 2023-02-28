@@ -20,3 +20,19 @@ First, you need to build every service by running the build script:
 
 Then, you can run the project using docker compose:    
 `docker compose up --build`
+
+## Project Architecture  
+![Project Architecture](docs/architechture.png)
+
+### Some Important Ports  
+* Gateway: 8080
+* Prometheus: 9090
+* Grafana: 3000
+* Kibana: 5601
+* Kafka UI: 9093
+* Postgres: 5432
+* MySQL: 3306
+* MongoDB: 27017
+* Redis: 6379
+* Elastic Search: 9200
+* Logstash: 5000
