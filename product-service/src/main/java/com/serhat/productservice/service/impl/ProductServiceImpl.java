@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final WebClient webClient;
 
     @Override
     @Cacheable(cacheNames = "products")
@@ -43,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
     @CacheEvict(cacheNames = "products", allEntries = true)
     public ProductDto createProduct(ProductAddRequest productAddRequest) {
         log.debug("createProduct() is called");
+        log.info("Product is created" + productAddRequest);
         return ProductConverter.convertToDto(productRepository.save(ProductConverter.convertToEntity(productAddRequest)));
     }
 
@@ -59,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
     @CacheEvict(cacheNames = "products", allEntries = true)
     public ProductDto updateProduct(Long id, ProductAddRequest productAddRequest) {
         log.debug("updateProduct() is called");
+        log.info("Product is updated" + productAddRequest);
         return productRepository.findById(id)
                 .map(product -> {
                     product.setCategory(productAddRequest.getCategory());
@@ -78,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
     @CacheEvict(cacheNames = "products", allEntries = true)
     public void deleteProduct(Long id) {
         log.debug("deleteProduct() is called");
+        log.info("Product is deleted" + id);
         productRepository.deleteById(id);
     }
 
