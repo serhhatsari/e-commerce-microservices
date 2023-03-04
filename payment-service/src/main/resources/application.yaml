@@ -29,6 +29,30 @@ spring:
     redis:
       time-to-live: 60000
 
+  kafka:
+    template:
+      default-topic: ${KAFKA_TOPIC:payment-events}
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+          spring:
+            json:
+              type:
+                mapping: order-event:com.serhat.paymentservice.model.event.OrderPlacedEvent
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+      group-id: ${KAFKA_GROUP_ID:payment-group}
+    producer:
+      properties:
+       spring:
+            json:
+            type:
+              mapping: payment-event:com.serhat.paymentservice.model.event.PaymentEvent
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+
 springdoc:
   swagger-ui:
     path: /api/docs

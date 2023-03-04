@@ -1,4 +1,4 @@
-package com.serhat.productservice.model.event;
+package com.serhat.paymentservice.model.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

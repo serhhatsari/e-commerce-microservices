@@ -66,9 +66,13 @@ services:
       SPRING_DATASOURCE_PASSWORD: root
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC: payment-events
+      KAFKA_GROUP_ID: payment-group
     depends_on:
         - mysql
         - redis
+        - kafka
 
   # Customer Service
   customer-service:

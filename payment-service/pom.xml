@@ -80,6 +80,12 @@
             <artifactId>logstash-logback-encoder</artifactId>
             <version>7.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
