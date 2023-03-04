@@ -21,25 +21,25 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<CustomerDto> createCustomer(@Valid  @RequestBody CustomerAddRequest customerAddRequest) {
-        log.info("Request received to create customer: {}", customerAddRequest);
+        log.debug("Request received to create customer: {}", customerAddRequest);
         return new ResponseEntity<>(customerService.createCustomer(customerAddRequest),  HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDto> getCustomer(@PathVariable String id) {
-        log.info("Request received to get customer with id: {}", id);
+        log.debug("Request received to get customer with id: {}", id);
         return new ResponseEntity<>(customerService.getCustomer(id),  HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CustomerDto> updateCustomer(@PathVariable String id, @Valid @RequestBody CustomerAddRequest customerAddRequest) {
-        log.info("Request received to update customer with id: {}", id);
+        log.debug("Request received to update customer with id: {}", id);
         return new ResponseEntity<>(customerService.updateCustomer(id, customerAddRequest),  HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable String id) {
-        log.info("Request received to delete customer with id: {}", id);
+        log.debug("Request received to delete customer with id: {}", id);
         customerService.deleteCustomer(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

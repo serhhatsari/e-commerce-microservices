@@ -21,19 +21,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+
     @Override
     @CacheEvict(value = "customers", allEntries = true)
     public CustomerDto createCustomer(CustomerAddRequest customerAddRequest) {
         log.info("Creating customer: {}", customerAddRequest);
-        log.info("Cache evicted for all customers");
+        log.debug("Cache evicted for all customers");
         return CustomerConverter.toDto(customerRepository.save(CustomerConverter.toEntity(customerAddRequest)));
     }
 
     @Override
     @Cacheable(value = "customers", key = "#id")
     public CustomerDto getCustomer(String id) {
-        log.info("Getting customer with id: {}", id);
-        log.info("Cache hit for customer with id: {}", id);
+        log.debug("Getting customer with id: {}", id);
+        log.debug("Cache hit for customer with id: {}", id);
         return customerRepository.findById(id).map(CustomerConverter::toDto).orElseThrow(CustomerNotFoundException::new);
     }
 
@@ -42,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto updateCustomer(String id, CustomerAddRequest customerAddRequest)
     {
         log.info("Updating customer with id: {}", id);
-        log.info("Cache updated for customer with id: {}", id);
+        log.debug("Cache updated for customer with id: {}", id);
         return CustomerConverter.toDto(
                 customerRepository.findById(id)
                         .map(customerEntity -> {
@@ -62,7 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
     @CacheEvict(value = "customers", key = "#id")
     public void deleteCustomer(String id) {
         log.info("Deleting customer with id: {}", id);
-        log.info("Cache evicted for customer with id: {}", id);
+        log.debug("Cache evicted for customer with id: {}", id);
         customerRepository.deleteById(id);
     }
 }
