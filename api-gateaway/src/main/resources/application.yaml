@@ -12,15 +12,38 @@ spring:
           uri: http://customer-service:8080
           predicates:
             - Path=/api/v1/customers
+
+        - id: customer-service-all
+          uri: http://customer-service:8080
+          predicates:
+            - Path=/api/v1/customers/*
+
         - id: order-service
           uri: http://order-service:8080
           predicates:
             - Path=/api/v1/orders
+
+        - id: order-service-all
+          uri: http://order-service:8080
+          predicates:
+            - Path=/api/v1/orders/*
+
         - id: product-service
           uri: http://product-service:8080
           predicates:
             - Path=/api/v1/products
+
         - id: payment-service
           uri: http://payment-service:8080
           predicates:
             - Path=/api/v1/payments
+
+        - id: payment-service-all
+          uri: http://payment-service:8080
+          predicates:
+            - Path=/api/v1/payments/*
+
+        - id: payment-service-all
+          uri: http://payment-service:8080
+          predicates:
+            - Path=/api/v1/payments/*
