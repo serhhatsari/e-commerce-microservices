@@ -25,14 +25,7 @@ Then, you can run the project using docker compose:
 ![Project Architecture](docs/architechture.png)
 
 ### Some Important Ports  
-* Gateway: 8080
-* Prometheus: 9090
+* Gateaway: 8080
+* Kafka UI: 9093
 * Grafana: 3000
 * Kibana: 5601
-* Kafka UI: 9093
-* Postgres: 5432
-* MySQL: 3306
-* MongoDB: 27017
-* Redis: 6379
-* Elastic Search: 9200
-* Logstash: 5000
