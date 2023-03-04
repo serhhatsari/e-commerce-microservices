@@ -33,6 +33,7 @@ public class ProductServiceImpl implements ProductService {
     @Cacheable(cacheNames = "products")
     public List<ProductDto> getProducts() {
         log.debug("getProducts() is called");
+
         return productRepository.findAll().stream()
                 .map(ProductConverter::convertToDto)
                 .collect(Collectors.toList());
