@@ -1,0 +1,18 @@
+server:
+    port: 8080
+
+spring:
+  application:
+    name: notification-service
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+  kafka:
+    template:
+      default-topic: ${KAFKA_TOPIC:payment-events}
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: ${GROUP_ID:payment-group}
