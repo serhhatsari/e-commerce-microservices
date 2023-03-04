@@ -46,8 +46,8 @@ spring:
       properties:
        spring:
             json:
-            type:
-              mapping: payment-event:com.serhat.paymentservice.model.event.PaymentEvent
+              type:
+                mapping: payment-event:com.serhat.paymentservice.model.event.PaymentEvent
       bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

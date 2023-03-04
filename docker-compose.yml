@@ -89,6 +89,20 @@ services:
     - mongo
     - redis
 
+  # Notification Service
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service
+    ports:
+    - "8085:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC: payment-events
+      KAFKA_GROUP_ID: payment-group
+    depends_on:
+    - kafka
+
   # Zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
