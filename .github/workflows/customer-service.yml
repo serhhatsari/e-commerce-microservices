@@ -34,7 +34,7 @@ jobs:
         run: cd ${{ env.service-name }} && mvn clean package -DskipTests && cd ..
       
       - name: Build and Tag Docker Image
-        run: cd ${{ env.service-name }} && docker build -t ${{ env.service-name }} . && docker tag ${{ env.service-name }} ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.service-name }}:latest
+        run: cd ${{ env.service-name }} && DOCKER_BUILDKIT=1 docker build -t ${{ env.service-name }} . && docker tag ${{ env.service-name }} ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.service-name }}:latest
 
       - name: Push Docker Image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.service-name }}:latest
