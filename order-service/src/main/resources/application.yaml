@@ -42,6 +42,7 @@ spring:
             type:
               mapping: order-event:com.serhat.orderservice.model.event.OrderPlacedEvent
 
+# swagger
 springdoc:
   swagger-ui:
     path: /api/docs
