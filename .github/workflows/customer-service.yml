@@ -2,8 +2,10 @@ name: CI/CD - Customer Service
  
 on:
   push:
-    branches: [ "master" ]
-    paths: ["./customer-service"]
+    branches:
+    - master
+    paths:
+    - customer-service
 
 env:
   service-name: customer-service
