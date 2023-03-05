@@ -1,9 +1,9 @@
-name: Update Docker Image in DockerHub
-
+name: CI/CD - Customer Service
+ 
 on:
   push:
     branches: [ "master" ]
-    paths: ["${{ env.service-name }}"]
+    paths: ["./customer-service"]
 
 env:
   service-name: customer-service
