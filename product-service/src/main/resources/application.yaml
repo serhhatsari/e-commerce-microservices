@@ -47,6 +47,7 @@ springdoc:
   swagger-ui:
     path: /api/docs
 
+# prometheus
 management:
   endpoints:
     web:
