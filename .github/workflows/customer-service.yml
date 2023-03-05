@@ -6,6 +6,11 @@ on:
     - master
     paths:
     - customer-service
+  pull_request:
+   branches: 
+   - master
+   paths: 
+   - customer-service
 
 env:
   service-name: customer-service
