@@ -20,7 +20,7 @@ spring:
     redis:
       time-to-live: 60000
 
-
+# swagger
 springdoc:
   swagger-ui:
     path: /api/docs
