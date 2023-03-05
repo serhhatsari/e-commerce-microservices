@@ -5,12 +5,7 @@ on:
     branches:
     - master
     paths:
-    - customer-service
-  pull_request:
-   branches: 
-   - master
-   paths: 
-   - customer-service
+    - 'customer-service'
 
 env:
   service-name: customer-service
