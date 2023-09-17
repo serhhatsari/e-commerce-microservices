@@ -12,14 +12,20 @@ Implementation of a REST Microservices for an E-Commerce Project with Spring Boo
 
 ### Installing
 You can clone the project using the following command:    
-`git clone https://github.com/serhhatsari/e-commerce-backend`  
+```shell
+git clone https://github.com/serhhatsari/e-commerce-backend
+```  
 
 ### Executing program
 First, you need to build every service by running the build script:  
-`cd scripts && chmod +x build.sh && ./build.sh && cd ..`
+```shell
+cd scripts && chmod +x build.sh && ./build.sh && cd ..
+```
 
 Then, you can run the project using docker compose:    
-`docker compose up --build`
+```shell
+docker compose up --build
+```
 
 ## Project Architecture  
 ![Project Architecture](docs/architechture.png)
