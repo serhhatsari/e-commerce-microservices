@@ -44,9 +44,3 @@ You can access the Kafka UI at 9093 port.
 
 ## Project Architecture  
 ![Project Architecture](docs/architechture.png)
-
-### Some Important Ports  
-* Gateaway: 8080
-* Kafka UI: 9093
-* Grafana: 3000
-* Kibana: 5601
