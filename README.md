@@ -10,19 +10,18 @@ Implementation of a REST Microservices for an E-Commerce Project with Spring Boo
 * Java 17
 * Docker / Docker Compose
 
-### Installing
-You can clone the project using the following command:    
+### Installation and Running 
+First, clone the project using the following command:    
 ```shell
 git clone https://github.com/serhhatsari/e-commerce-backend
 ```  
 
-### Executing program
-First, you need to build every service by running the build script:  
+Then, you need to build every service by running the build script:  
 ```shell
 cd scripts && chmod +x build.sh && ./build.sh && cd ..
 ```
 
-Then, you can run the project using docker compose:    
+Finally, you can run the project using docker compose:    
 ```shell
 docker compose up --build
 ```
